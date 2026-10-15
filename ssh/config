@@ -1,0 +1,70 @@
+# SSH Client Configuration
+# Docs: https://man.openbsd.org/ssh_config
+
+# ── Global defaults (apply to all hosts) ──────────────────────────────────────
+Host *
+    # Keep connections alive — prevents timeouts behind firewalls/NAT/VPNs
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+
+    # Multiplexing — reuse existing connections to the same host
+    # First connection creates a master socket; subsequent ones reuse it
+    # Cuts reconnect time from ~2s to <100ms (great for kubectl, terraform, git)
+    ControlMaster auto
+    ControlPath ~/.ssh/sockets/%r@%h-%p
+    ControlPersist 10m
+
+    # accept-new: auto-accept keys for hosts you've never connected to
+    # but REJECT if a known host's key has changed (MITM protection)
+    StrictHostKeyChecking accept-new
+
+    # Only use explicitly specified keys — prevents leaking all your keys
+    # to every server you connect to
+    IdentitiesOnly yes
+
+    # Add keys to macOS keychain so you don't get passphrase prompts
+    AddKeysToAgent yes
+    UseKeychain yes
+
+    # Prefer modern ED25519 keys, then fallback to RSA
+    IdentityFile ~/.ssh/id_ed25519
+    IdentityFile ~/.ssh/id_rsa
+
+    # Compress traffic — helps on slow VPNs or remote connections
+    Compression yes
+
+    # Silence the banner/MOTD noise on login
+    LogLevel ERROR
+
+    # Reuse existing authenticated connection for faster git push/pull
+    # especially useful when pushing to GitLab frequently
+    ControlPath ~/.ssh/sockets/%r@%h-%p
+
+# ── GitHub ─────────────────────────────────────────────────────────────────────
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519
+    StrictHostKeyChecking yes          # Always verify GitHub's key
+
+# ── GitLab ─────────────────────────────────────────────────────────────────────
+Host gitlab.com
+    HostName gitlab.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519
+    StrictHostKeyChecking yes          # Always verify GitLab's key
+
+# ── Kubernetes / cloud nodes (dynamic IPs — skip host key checking) ────────────
+# Uncomment and customise for bastion hosts, EKS nodes, etc.
+# Host *.eu-west-1.compute.amazonaws.com
+#     User ec2-user
+#     IdentityFile ~/.ssh/id_ed25519
+#     StrictHostKeyChecking no
+#     UserKnownHostsFile /dev/null     # Don't pollute known_hosts with ephemeral IPs
+
+# ── Example: bastion jump host ─────────────────────────────────────────────────
+# Host internal-server
+#     HostName 10.0.0.5
+#     User admin
+#     ProxyJump bastion.example.com   # Tunnel through bastion automatically
+#     IdentityFile ~/.ssh/id_ed25519

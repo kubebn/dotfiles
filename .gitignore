@@ -1,0 +1,9 @@
+# Zsh byte-compiled artifacts (generated in-place by background zcompile)
+*.zwc
+*.zwc.old
+
+# Machine-specific / sensitive — not present on personal machines
+certs/
+
+# macOS
+.DS_Store

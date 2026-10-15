@@ -1,0 +1,5 @@
+# ~/.zprofile
+# This file is sourced by login shells before .zshrc
+# Keep it minimal - most configuration should be in .zshrc
+
+# Nothing here - moved to .zshrc to avoid breaking p10k instant prompt

@@ -1,0 +1,7 @@
+catppuccin.catppuccin-vsc
+github.copilot-chat
+hashicorp.hcl
+hashicorp.terraform
+redhat.vscode-yaml
+tamasfe.even-better-toml
+zainchen.json

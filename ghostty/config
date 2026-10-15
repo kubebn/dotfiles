@@ -1,0 +1,79 @@
+# ── Clipboard ──────────────────────────────────────────────────────────────────
+copy-on-select = clipboard
+keybind = super+c=copy_to_clipboard
+keybind = super+v=paste_from_clipboard
+
+
+# ── macOS ──────────────────────────────────────────────────────────────────────
+# Hides the native title bar — cleaner look, more vertical space
+macos-titlebar-style = hidden
+# Right Option key acts as Alt — needed for vim motions, tmux, etc.
+# Change to "left" or "true" (both sides) if you prefer
+macos-option-as-alt = right
+# Use Display P3 wide color space — more accurate colors on modern Mac screens
+window-colorspace = display-p3
+
+# ── Window ─────────────────────────────────────────────────────────────────────
+# Padding around the terminal content — breathing room from window edges
+window-padding-x = 8
+window-padding-y = 6
+# Balance padding so splits look even
+window-padding-balance = true
+# Bright lavender divider line — makes split boundaries easy to see
+split-divider-color = #b4befe
+# Fade inactive splits slightly — reinforces which pane is active
+unfocused-split-opacity = 0.75
+# Remember window size and position on next launch
+window-save-state = always
+# Skip the "are you sure?" dialog when closing a tab/window
+confirm-close-surface = false
+
+# ── Font ───────────────────────────────────────────────────────────────────────
+font-family = JetBrains Mono
+font-family = Symbols Nerd Font Mono  # fallback for p10k/nerd font icons
+font-size = 13
+# Slightly bolder text — makes a big difference on Retina/HiDPI screens
+font-thicken = true
+# Adds a bit of vertical breathing room between lines
+adjust-cell-height = 2
+
+# ── Mouse ──────────────────────────────────────────────────────────────────────
+# Hide the cursor while you're typing so it doesn't get in the way
+mouse-hide-while-typing = true
+# Scroll faster — default is 1, 2-3 feels more natural
+mouse-scroll-multiplier = 2
+
+# ── Shell integration ──────────────────────────────────────────────────────────
+# sudo: re-uses shell integration in sudo sessions
+# no-cursor: don't let shell integration override your cursor style
+# no-title: don't let shell override the window title
+shell-integration-features = no-cursor,sudo,no-title
+
+clipboard-paste-protection = false
+
+# ── Theme / Colors (Catppuccin Mocha) ─────────────────────────────────────────
+background-opacity = 0.95
+background-blur = true
+theme = Catppuccin Mocha
+background = #1e1e2e
+foreground = #e6eaf4
+selection-background = #585b70
+selection-foreground = #e6eaf4
+cursor-color = #f5e0dc
+cursor-text = #1e1e2e
+palette = 0=#45475a
+palette = 1=#f38ba8
+palette = 2=#a6e3a1
+palette = 3=#f9e2af
+palette = 4=#89b4fa
+palette = 5=#f5c2e7
+palette = 6=#94e2d5
+palette = 7=#a6adc8
+palette = 8=#585b70
+palette = 9=#f37799
+palette = 10=#89d88b
+palette = 11=#ebd391
+palette = 12=#74a8fc
+palette = 13=#f2aede
+palette = 14=#6bd7ca
+palette = 15=#bac2de

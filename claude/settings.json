@@ -1,0 +1,22 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": "claudeline",
+    "padding": 0
+  },
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true
+  },
+  "extraKnownMarketplaces": {
+    "superpowers-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers-marketplace"
+      }
+    }
+  },
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  },
+"skipDangerousModePermissionPrompt": true
+}

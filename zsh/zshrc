@@ -1,0 +1,52 @@
+# ~/.zshrc — orchestrator
+# Real configuration lives in conf.d/ and lib/. This file only controls the
+# load order, which matters for the p10k instant prompt and zinit turbo mode.
+#
+# Resolve this file's real directory even though ~/.zshrc is a symlink, so the
+# modules can be sourced from the repo without extra symlinks.
+ZSH_HOME="${${(%):-%x}:A:h}"
+
+# 1. Environment (PATH, brew, OrbStack, exports) — must run before any output
+#    and before the instant prompt.
+source "$ZSH_HOME/conf.d/env.zsh"
+
+# 2. Powerlevel10k instant prompt — after PATH/env, before anything prints.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# 3. Init-output cache helper (used by plugins/tools).
+source "$ZSH_HOME/lib/eval-cache.zsh"
+
+# 4. Remaining modules, in order.
+for _mod in plugins options tools keybinds aliases functions; do
+  source "$ZSH_HOME/conf.d/$_mod.zsh"
+done
+unset _mod
+
+# 5. Powerlevel10k theme config (run 'p10k configure' to regenerate).
+[[ -r "$ZSH_HOME/p10k.zsh" ]] && source "$ZSH_HOME/p10k.zsh"
+
+# 6. Machine-specific / private overrides (not tracked in the repo).
+[[ -r "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
+
+# 7. Byte-compile config files in the background so future startups parse faster.
+#    Runs in a subshell (variables stay local) and a mkdir lock prevents two
+#    shells compiling the same file at once.
+(
+  setopt local_options null_glob
+  lock="${TMPDIR:-/tmp}/zsh-zwc-$UID.lock"
+  mkdir "$lock" 2>/dev/null || exit 0
+  trap "rmdir '$lock'" EXIT
+  for f in "$ZSH_HOME"/zshrc "$ZSH_HOME"/lib/*.zsh "$ZSH_HOME"/conf.d/*.zsh; do
+    [[ -s "$f.zwc" && ! "$f" -nt "$f.zwc" ]] && continue
+    zcompile "$f" 2>/dev/null
+  done
+) &!
+
+# bun completions
+[ -s "/Users/boriss.novickovs/.bun/_bun" ] && source "/Users/boriss.novickovs/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

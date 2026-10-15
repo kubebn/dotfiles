@@ -1,0 +1,88 @@
+# Atuin configuration
+# Docs: https://docs.atuin.sh/configuration/config/
+
+# ── Sync ──────────────────────────────────────────────────────────────────────
+auto_sync = true
+sync_frequency = "5m"          # Sync every 5 min (default is 10m)
+update_check = true
+
+# ── Search ────────────────────────────────────────────────────────────────────
+search_mode = "daemon-fuzzy"   # Fastest fuzzy search via background daemon
+filter_mode = "global"         # Ctrl+R searches all history across all machines
+workspaces = true              # In a git repo, auto-filter to workspace commands
+
+# Up arrow = directory-scoped (shows commands run here before)
+# Ctrl+R   = global (shows everything)
+filter_mode_shell_up_key_binding = "directory"
+
+# ── Behaviour ─────────────────────────────────────────────────────────────────
+enter_accept = true            # Enter runs immediately, Tab puts in prompt for editing
+exit_mode = "return-query"     # Escape keeps your typed query (not original line)
+command_chaining = true        # History entries with && / || work correctly
+ctrl_n_shortcuts = true        # Ctrl+1..9 shortcuts (Alt conflicts on macOS)
+
+# ── UI ────────────────────────────────────────────────────────────────────────
+style = "compact"              # Compact layout — less screen takeover
+invert = true                  # Search bar at top (more natural to type then see results below)
+show_preview = true            # Show full command below list (great for long kubectl/tf commands)
+max_preview_height = 4
+show_help = true
+show_tabs = true
+inline_height = 20             # Max 20 lines — doesn't take over the whole terminal
+
+# ── Columns ───────────────────────────────────────────────────────────────────
+# exit: shows ✓/✗ — great for finding only commands that succeeded
+# duration: helps find slow terraform/kubectl commands
+# directory: shows where command was run — essential for multi-repo DevOps work
+columns = ["exit", "duration", { type = "directory", width = 25 }, "command"]
+
+# ── Security & filtering ──────────────────────────────────────────────────────
+secrets_filter = true          # Never store AWS keys, GitHub tokens, Slack webhooks, etc.
+store_failed = true            # Keep failed commands — useful for debugging
+
+# Filter noisy commands from history
+history_filter = [
+    "^ls$",
+    "^ls ",
+    "^cd$",
+    "^cd ",
+    "^pwd$",
+    "^clear$",
+    "^exit$",
+    "^ ",                      # Commands starting with space (intentionally hidden)
+]
+
+# ── Stats ─────────────────────────────────────────────────────────────────────
+[stats]
+# Track subcommands for these tools (kubectl get vs kubectl apply, etc.)
+common_subcommands = [
+    "apt", "cargo", "composer", "dnf",
+    "docker", "dotnet", "git", "go",
+    "helm", "ip", "kubectl", "nix",
+    "nmcli", "npm", "oc", "podman",
+    "systemctl", "terraform", "tmux", "yarn",
+]
+common_prefix = ["sudo"]
+ignored_commands = ["clear", "exit", "history"]
+
+# ── Keys ──────────────────────────────────────────────────────────────────────
+[keys]
+scroll_exits = true            # Up/down past list edges exits back to shell
+
+# ── Sync v2 ───────────────────────────────────────────────────────────────────
+[sync]
+records = true                 # Use newer sync v2 protocol
+
+# ── Daemon ────────────────────────────────────────────────────────────────────
+[daemon]
+enabled = true                 # Background daemon for faster search indexing
+autostart = true               # Start automatically when needed
+sync_frequency = 300           # Daemon syncs every 5 minutes
+
+# ── Preview ───────────────────────────────────────────────────────────────────
+[preview]
+strategy = "auto"
+
+# ── AI ────────────────────────────────────────────────────────────────────────
+[ai]
+enabled = false                 # Press ? to get AI command suggestions
