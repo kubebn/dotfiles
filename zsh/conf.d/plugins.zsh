@@ -22,7 +22,12 @@ zinit light romkatv/powerlevel10k
 # atinit runs compinit; atload byte-compiles the completion dump for faster
 # subsequent startups.
 zinit wait lucid \
-  atinit"zicompinit; zicdreplay" \
+  atinit'autoload -Uz compinit
+         () { setopt local_options extended_glob
+              local zd="${ZSH_COMPDUMP:-${ZDOTDIR:-$HOME}/.zcompdump}"
+              # Full compinit (compaudit + rescan) at most once a day; -C otherwise.
+              if [[ -n $zd(#qN.mh-24) ]]; then compinit -C -d "$zd"; else compinit -d "$zd"; fi }
+         zicdreplay' \
   atload'compdump="${ZSH_COMPDUMP:-${ZDOTDIR:-$HOME}/.zcompdump}";
          [[ ! -s "${compdump}.zwc" || "$compdump" -nt "${compdump}.zwc" ]] && zcompile "$compdump" &!' \
   for Aloxaf/fzf-tab \
